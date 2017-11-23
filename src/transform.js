@@ -19,8 +19,12 @@ function getPeriodValues (array) {
     .filter(x => x)
 }
 
+function loadSpreadsheet() {
+  return XLSX.readFile(SPREADSHEET_PATH)
+}
+
 function getSheetData (sheetName) {
-  const workbook = XLSX.readFile(SPREADSHEET_PATH)
+  const workbook = loadSpreadsheet()
   const sheet = workbook.Sheets[sheetName]
 
   if (!sheet) {
@@ -103,16 +107,18 @@ function saveToJson(filename, data) {
 }
 
 function buildJsonFromSheet (sheetName) {
-  const json = sheetArrayToObjectXf(
+  const periods = sheetArrayToObjectXf(
     getPeriodDataForSheet(sheetName)
   )
 
   saveToJson(
     kebabCase(sheetName),
-    JSON.stringify(json, null, 2),
+    JSON.stringify(periods, null, 2),
   )
 }
 
 module.exports = {
+  loadSpreadsheet,
+  saveToJson,
   buildJsonFromSheet,
 }

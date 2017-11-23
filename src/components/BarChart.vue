@@ -1,15 +1,41 @@
+<template>
+  <highcharts :options="chartData"/>
+</template>
+
 <script>
-  import axios from 'axios'
-  import { format } from 'date-fns'
-  import { Bar, mixins } from 'vue-chartjs'
-  const { reactiveProp } = mixins
+  import merge from 'lodash/merge'
 
   export default {
-    extends: Bar,
-    mixins: [reactiveProp],
-    props: ['chartData', 'options'],
-    mounted () {
-      this.renderChart(this.chartData, this.options)
+    data () {
+      return {
+        defaults: {
+          chart: {
+            type: 'column',
+          },
+          plotOptions: {
+            column: {
+              stacking: 'percent',
+              dataLabels: {
+                enabled: false,
+                formatter () {
+                  return `${Math.round(this.percentage)}`
+                },
+              }
+            }
+          },
+        }
+      }
     },
+    props: ['title', 'subtitle', 'options'],
+    created () {
+      this.chartData = merge({}, this.defaults, this.options, {
+        title: {
+          text: this.title,
+        },
+        subtitle: {
+          text: this.subtitle,
+        }
+      })
+    }
   }
 </script>

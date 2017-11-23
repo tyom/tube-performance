@@ -1,10 +1,9 @@
+<!--suppress CheckEmptyScriptTag -->
 <template>
   <div id="app">
-    <h2>Platform wait time</h2>
+    <h1>Platform wait time</h1>
     <div class="period" v-for="(period, name) in periods">
-      <h3>{{ name }}</h3>
-      <bar-chart :chartData="period" :options="{ maintainAspectRatio: false }" class="chart" v-if="period.datasets.length"/>
-      <p v-else>No data</p>
+      <bar-chart :title="name" :options="period" v-if="period.series.length"/>
     </div>
   </div>
 </template>
@@ -38,14 +37,23 @@
     methods: {
       transformToChartData (data) {
         return {
-          labels: data.dates.map(d => `${format(d.from, 'D/MM/YY')}-${format(d.to, 'D/MM/YY')}`),
-          datasets: Object.keys(data.items)
+          xAxis: {
+            categories: data.dates.map((d, i) => `fwap ${i + 1}`),
+            crosshair: true,
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: null
+            }
+          },
+          series: Object.keys(data.items)
             .map(item => {
               if (!data.items[item].length) { return null }
               return {
-                label: item,
-                backgroundColor: LINE_COLOURS[item] || '#777',
+                name: item,
                 data: data.items[item],
+                color: LINE_COLOURS[item] || '#777',
               }
             })
             .filter(x => x)
@@ -56,4 +64,7 @@
 </script>
 
 <style>
+  body {
+    font: 16px/1.4 'Helvetica Neue', Arial, sans-serif;
+  }
 </style>
