@@ -1,7 +1,18 @@
 {
+  "scripts": {
+    "transform-data": "node ./scripts/build-json-from-xlsx.js",
+    "start": "poi",
+    "test": "jest --watch"
+  },
   "dependencies": {
     "date-fns": "1.29.0",
     "lodash": "4.17.4",
+    "poi": "9.5.3",
     "xlsx": "0.11.10"
+  },
+  "devDependencies": {
+    "babel-jest": "21.2.0",
+    "babel-plugin-rewire": "1.1.0",
+    "jest": "21.2.1"
   }
 }
