@@ -75,7 +75,7 @@ function sheetArrayToObjectXf (array) {
     const currentPeriodValues = getPeriodValues(value)
 
     if (isTotal) {
-      acc[currentPeriod].periodDates = currentPeriodValues.map((value, i) => {
+      acc[currentPeriod].dates = currentPeriodValues.map((value, i) => {
         // LU has 13 reporting periods of 28 days, from April to March.
         // The lengths of periods 1 and 13 may however vary to align with the financial year end of 31 March
         let startOfPeriodDate = addWeeks(endOfWeek(firstPeriodDate), 4 * i)
