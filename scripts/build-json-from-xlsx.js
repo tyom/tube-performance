@@ -1,7 +1,7 @@
-const { buildJsonFromSheet } = require('../src/transform')
-const { loadSpreadsheet, saveToJson } = require('../src/transform')
+const path = require('path')
+const { loadSpreadsheet, buildJsonFromWorkbookSheets } = require('../src/transform')
 
-const workbook = loadSpreadsheet()
+const workbook = loadSpreadsheet(path.join(__dirname, '../data/lu-performance-data-almanac.xlsx'))
 const sheetNames = workbook.SheetNames.slice(23, 27)
 
-sheetNames.forEach(buildJsonFromSheet)
+buildJsonFromWorkbookSheets(workbook, sheetNames)

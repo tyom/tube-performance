@@ -31,6 +31,7 @@
       this.chartData = merge({}, this.defaults, this.options, {
         title: {
           text: this.title,
+          align: 'left',
         },
         subtitle: {
           text: this.subtitle,
