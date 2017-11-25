@@ -12,6 +12,6 @@ module.exports = {
     'Northern': '#000000',
     'Piccadilly': '#003688',
     'Victoria': '#0098D4',
-    'Waterloo and City': '#95CDBA',
+    'Waterloo & City': '#95CDBA',
   },
 }

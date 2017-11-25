@@ -1,7 +1,7 @@
 <!--suppress CheckEmptyScriptTag -->
 <template>
   <div id="app">
-    <navigation :items="getNavItems()"/>
+    <navigation :items="getNavItems({ selected: selectedMetric })"/>
     <div class="metric">
       <h1>{{ selectedMetric.title }}</h1>
       <div class="period" v-for="(period, name) in selectedMetric.periods">
@@ -13,7 +13,7 @@
 
 <script>
   import axios from 'axios'
-  import { format } from 'date-fns'
+  import format from 'date-fns/format'
   import map from 'lodash/map'
 
   import Navigation from './Navigation'
@@ -51,28 +51,34 @@
     },
 
     methods: {
-      getNavItems () {
+      getNavItems ({ selected }) {
         return map(this.metrics, metric => ({
           slug: metric.slug,
           label: metric.title,
+          isSelected: metric.slug === selected.slug,
         }))
       },
 
       transformToChartData (data) {
         return {
           xAxis: {
-            categories: data.dates.map((d, i) => `fwap ${i + 1}`),
-            // crosshair: true,
+            categories: data.dates.map((d, i) => ({
+              label: `fwap ${i + 1}`,
+              range: data.dates[i],
+            })),
+            labels: {
+              format: '{value.label}',
+            },
+            crosshair: true,
           },
           yAxis: {
-            min: 0,
             title: {
               text: null
             }
           },
           series: Object.keys(data.items)
-            .map(item => {
-              if (!data.items[item].length) { return null }
+            .map((item, i) => {
+              if (!data.items[item].length) { return }
               return {
                 name: item,
                 data: data.items[item],
