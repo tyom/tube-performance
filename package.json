@@ -4,6 +4,7 @@
     "start": "poi",
     "test": "jest --watch"
   },
+  "main": "src/index.js",
   "dependencies": {
     "axios": "0.17.1",
     "date-fns": "1.29.0",
