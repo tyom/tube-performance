@@ -11,7 +11,10 @@
     "highcharts": "6.0.3",
     "lodash": "4.17.4",
     "poi": "9.5.3",
+    "vue": "2.5.8",
     "vue-highcharts": "0.0.10",
+    "vue-router": "3.0.1",
+    "vuex": "3.0.1",
     "xlsx": "0.11.10"
   },
   "devDependencies": {

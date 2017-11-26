@@ -1,14 +1,22 @@
 <template>
   <nav>
-    <a :href="`/${item.slug}`" v-for="item in items" :class="{'is-selected': item.isSelected}">
+    <router-link
+      :to="item.slug"
+      :key="item.slug"
+      :class="{'is-selected': selected.slug === item.slug}"
+      v-for="item in items"
+    >
       {{ item.label }}
-    </a>
+    </router-link>
   </nav>
 </template>
 
 <script>
   export default {
-    props: ['items']
+    props: {
+      items: Array,
+      selected: Object,
+    },
   }
 </script>
 

@@ -1,13 +1,7 @@
-<!--suppress CheckEmptyScriptTag -->
 <template>
   <div id="app">
-    <navigation :items="getNavItems({ selected: selectedMetric })"/>
-    <div class="metric">
-      <h1>{{ selectedMetric.title }}</h1>
-      <div class="period" v-for="(period, name) in selectedMetric.periods">
-        <bar-chart :title="name" :options="period" v-if="period.series.length"/>
-      </div>
-    </div>
+    <navigation :items="navItems" :selected="$store.state.selectedMetric"/>
+    <router-view/>
   </div>
 </template>
 
@@ -15,56 +9,61 @@
   import axios from 'axios'
   import format from 'date-fns/format'
   import map from 'lodash/map'
+  import get from 'lodash/get'
 
   import Navigation from './Navigation'
-  import BarChart from './BarChart'
   import { LINE_COLOURS } from '../constants'
 
   export default {
-    data () {
-      return {
-        metrics: null,
-        selectedMetric: {},
-      }
-    },
-
     components: {
-      BarChart,
       Navigation,
     },
 
-    async created () {
-      const metrics = await axios('/data/metrics.json').then(res => res.data)
+    computed: {
+      navItems () {
+        return map(this.$store.state.metrics, metric => ({
+          slug: metric.slug,
+          label: metric.title,
+          isSelected: metric.slug === get(this.$store, 'state.selectedMetric')
+        }))
+      }
+    },
 
-      this.metrics = map(metrics, metric => {
+    async created () {
+      await this.$store.dispatch('getData', this.transformMetric)
+
+      this.$store.commit('selectMetric', this.$route.params.slug)
+    },
+
+    watch: {
+      '$route': {
+        handler (route) {
+          this.$store.commit('selectMetric', route.params.slug)
+        },
+      }
+    },
+
+    methods: {
+      transformMetric (metric) {
         const periods = Object.keys(metric.periods).reduce((acc, value) => {
-          acc[value] = this.transformToChartData(metric.periods[value])
+          acc[value] = this.transformPeriodToChartData(metric.periods[value])
           return acc
         }, {})
 
         return Object.assign({}, metric, {
           periods
         })
-      })
-
-      this.selectedMetric = this.metrics[0]
-    },
-
-    methods: {
-      getNavItems ({ selected }) {
-        return map(this.metrics, metric => ({
-          slug: metric.slug,
-          label: metric.title,
-          isSelected: metric.slug === selected.slug,
-        }))
       },
 
-      transformToChartData (data) {
+      transformPeriodToChartData (period) {
         return {
+          credits: {
+            enabled: false,
+          },
           xAxis: {
-            categories: data.dates.map((d, i) => ({
+            categories: period.dates.map((d, i) => ({
               label: `fwap ${i + 1}`,
-              range: data.dates[i],
+              range: period.dates[i],
             })),
             labels: {
               format: '{value.label}',
@@ -76,12 +75,12 @@
               text: null
             }
           },
-          series: Object.keys(data.items)
-            .map((item, i) => {
-              if (!data.items[item].length) { return }
+          series: Object.keys(period.items)
+            .map((item) => {
+              if (!period.items[item].length) { return }
               return {
                 name: item,
-                data: data.items[item],
+                data: period.items[item],
                 color: LINE_COLOURS[item] || '#777',
               }
             })
@@ -97,9 +96,5 @@
     font: 16px/1.4 'Helvetica Neue', Arial, sans-serif;
     padding: 0;
     margin: 0;
-  }
-
-  .metric {
-    padding: 20px;
   }
 </style>
