@@ -9,7 +9,6 @@ const store = new Vuex.Store({
   state: {
     metrics: {},
     selectedMetric: {},
-    navItems: [],
   },
   mutations: {
     getData: (state, payload) => {
