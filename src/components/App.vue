@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <navigation :items="navItems" :selected="$store.state.selectedMetric"/>
+    <navigation class="navigation" :items="navItems" :selected="$store.state.selectedMetric"/>
     <router-view/>
   </div>
 </template>
@@ -96,5 +96,20 @@
     font: 16px/1.4 'Helvetica Neue', Arial, sans-serif;
     padding: 0;
     margin: 0;
+  }
+
+  #app {
+    display: flex;
+  }
+
+  .navigation {
+    width: 20%;
+    min-width: 200px;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .metric {
+    width: 80%;
   }
 </style>

@@ -24,8 +24,12 @@
   }
 </script>
 
-<style>
+<style scoped>
   .metric {
-    padding: 20px;
+    padding: 40px;
+  }
+
+  h1 {
+    margin: 0 0 40px;
   }
 </style>
