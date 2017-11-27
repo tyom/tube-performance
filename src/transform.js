@@ -111,6 +111,7 @@ function buildJsonFromWorkbookSheets (workbook, sheetNames) {
   }
 
   const sheetsData = names.reduce((acc, sheetName) => {
+    console.log('Processing:', sheetName)
     const sheetData = getSheetData(workbook, sheetName)
     const sheetKey = camelCase(sheetName)
     acc[sheetKey] = sheetArrayToObjectXf(
