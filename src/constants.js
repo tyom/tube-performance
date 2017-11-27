@@ -1,5 +1,3 @@
-const path = require('path')
-
 module.exports = {
   LINE_COLOURS: {
     'Bakerloo': '#B36305',
