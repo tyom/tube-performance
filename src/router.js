@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 
 export default  new VueRouter({
   routes: [
-    { path: '/:slug', component: Metric },
+    { name: 'metric', path: '/:slug', component: Metric },
     { path: '/', redirect: '/platform-wait-time' },
   ],
 })

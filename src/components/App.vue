@@ -100,6 +100,7 @@
 
   #app {
     display: flex;
+    min-height: 100vh;
   }
 
   .navigation {

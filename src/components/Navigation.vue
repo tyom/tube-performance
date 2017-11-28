@@ -24,6 +24,7 @@
   nav {
     background: #24322d;
     display: flex;
+    padding: 30px 0;
   }
 
   a {
