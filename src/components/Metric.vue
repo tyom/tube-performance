@@ -36,7 +36,7 @@
           return selectedPeriodLabels.filter(label => label !== periodLabel)
         }
 
-        return selectedPeriodLabels.concat(periodLabel)
+        return [periodLabel].concat(selectedPeriodLabels)
       },
 
       isSelectedPeriod (periodLabel) {
@@ -67,7 +67,7 @@
         const periodQuery = this.$route.query.period
 
         if (!periodQuery) {
-          return this.availablePeriods
+          return [this.availablePeriods[0]]
         }
 
         const getPeriodByLabel = label => this.availablePeriods.find(period => period.label === label)
