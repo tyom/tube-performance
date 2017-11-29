@@ -20,7 +20,7 @@ const store = new Vuex.Store({
   },
   actions: {
     async getData ({ commit }, metricTransformer) {
-      const responseData = await axios('/data/metrics.json').then(res => res.data)
+      const responseData = await axios('/metrics.json').then(res => res.data)
       const metrics = map(responseData, metricTransformer)
 
       commit('getData', metrics)

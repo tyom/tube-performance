@@ -100,7 +100,7 @@ function sheetArrayToObjectXf (array) {
 }
 
 function saveToJson(filename, data) {
-  fs.writeFileSync(`data/${filename}.json`, data)
+  fs.writeFileSync(`static/${filename}.json`, data)
   console.info(`Saved data to '${filename}.json'`)
 }
 
