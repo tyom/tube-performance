@@ -1,3 +1,6 @@
 {
-  "plugins": ["rewire"]
+  "plugins": ["rewire"],
+  "presets": [
+    ["babel-preset-poi", { "jsx": "vue" }]
+  ]
 }
