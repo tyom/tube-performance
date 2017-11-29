@@ -2,6 +2,7 @@
   "scripts": {
     "transform-data": "node ./scripts/build-json-from-xlsx.js",
     "start": "poi",
+    "build": "npm run transform-data && poi build",
     "test": "jest --watch"
   },
   "main": "src/index.js",
