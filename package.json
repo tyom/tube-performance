@@ -3,7 +3,8 @@
     "transform-data": "node ./scripts/build-json-from-xlsx.js",
     "start": "poi",
     "build": "npm run transform-data && poi build",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "deploy": "test -d dist && gh-pages -d dist || echo '⚠  Run `yarn build` first.\n'"
   },
   "main": "src/index.js",
   "dependencies": {
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "babel-jest": "21.2.0",
-    "babel-plugin-rewire": "1.1.0"
+    "babel-plugin-rewire": "1.1.0",
+    "gh-pages": "1.1.0"
   }
 }
