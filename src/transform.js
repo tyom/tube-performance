@@ -26,7 +26,12 @@ function loadSpreadsheet(filePath) {
 }
 
 function getSheetData (workbook, sheetName) {
-  const sheet = workbook.Sheets[sheetName]
+  let sheet
+  try {
+    sheet = workbook.Sheets[sheetName]
+  } catch (err) {
+    throw Error('workbook is invalid')
+  }
 
   if (!sheet) {
     throw Error(`'${sheetName}' sheet is not found in the workbook`)
@@ -44,6 +49,10 @@ function getPeriodsRowIndex (sheetData) {
 
 function getPeriodData (sheetData) {
   const periodsHeadingIndex = getPeriodsRowIndex(sheetData)
+
+  if (periodsHeadingIndex < 0) {
+    return null
+  }
 
   return sheetData.slice(periodsHeadingIndex + 1)
 }
