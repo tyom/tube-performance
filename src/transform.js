@@ -1,7 +1,8 @@
 const fs = require('fs')
 const XLSX = require('xlsx')
 const { endOfWeek, addWeeks, addDays } = require('date-fns')
-const { kebabCase, camelCase, isString, flatten, compact } = require('lodash')
+const { kebabCase, isString } = require('lodash')
+const { flow, curry, map }  = require('lodash/fp')
 
 const TOTAL_PERIOD_COUNT = 13
 
@@ -26,12 +27,11 @@ function loadSpreadsheet(filePath) {
 }
 
 function getSheetData (workbook, sheetName) {
-  let sheet
-  try {
-    sheet = workbook.Sheets[sheetName]
-  } catch (err) {
-    throw Error('workbook is invalid')
+  if (!sheetName) {
+    throw Error('sheetName is required')
   }
+
+  const sheet = workbook.Sheets[sheetName]
 
   if (!sheet) {
     throw Error(`'${sheetName}' sheet is not found in the workbook`)
@@ -109,30 +109,30 @@ function sheetArrayToObjectXf (array) {
 }
 
 function saveToJson(filename, data) {
-  fs.writeFileSync(`static/${filename}.json`, data)
+  fs.writeFileSync(`static/${filename}.json`, JSON.stringify(data, null, 2))
   console.info(`Saved data to '${filename}.json'`)
 }
 
-function buildJsonFromWorkbookSheets (workbook, sheetNames) {
-  const names = compact(flatten([sheetNames]))
-  if (!names.length) {
-    throw Error('sheetNames is required')
-  }
-
-  const sheetsData = names.reduce((acc, sheetName) => {
+function buildJsonFromWorkbookSheets (workbook, sheetNames = []) {
+  const sheetData = curry(getSheetData)
+  const periodData = curry(getPeriodData)
+  const saveFile = curry(saveToJson)
+  const log = sheetName => {
     console.log('Processing:', sheetName)
-    const sheetData = getSheetData(workbook, sheetName)
-    const sheetKey = camelCase(sheetName)
-    acc[sheetKey] = sheetArrayToObjectXf(
-      getPeriodData(sheetData)
-    )
-    return acc
-  }, {})
-
-  saveToJson(
-    'metrics',
-    JSON.stringify(sheetsData, null, 2),
+    return sheetName
+  }
+  const transformEachSheet = flow(
+    log,
+    sheetData(workbook),
+    periodData,
+    sheetArrayToObjectXf,
   )
+  const transformWorkbook = flow(
+    map(transformEachSheet),
+    saveFile('metrics'),
+  )
+
+  transformWorkbook(sheetNames)
 }
 
 module.exports = {
