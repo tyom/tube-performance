@@ -1,5 +1,5 @@
-{
-  "ticketPurchaseTime": {
+[
+  {
     "title": "Ticket Purchase Time",
     "slug": "ticket-purchase-time",
     "periods": {
@@ -2174,7 +2174,7 @@
       }
     }
   },
-  "platformWaitTime": {
+  {
     "title": "Platform Wait Time",
     "slug": "platform-wait-time",
     "periods": {
@@ -4455,7 +4455,7 @@
       }
     }
   },
-  "onTrainTime": {
+  {
     "title": "On Train Time",
     "slug": "on-train-time",
     "periods": {
@@ -6736,7 +6736,7 @@
       }
     }
   },
-  "stationJourneyTime": {
+  {
     "title": "Station Journey Time",
     "slug": "station-journey-time",
     "periods": {
@@ -8911,7 +8911,7 @@
       }
     }
   },
-  "trainJourneyTime": {
+  {
     "title": "Train Journey Time",
     "slug": "train-journey-time",
     "periods": {
@@ -11192,7 +11192,7 @@
       }
     }
   },
-  "plannedClosuresTime": {
+  {
     "title": "Closures Time",
     "slug": "closures-time",
     "periods": {
@@ -13037,7 +13037,7 @@
       }
     }
   },
-  "trainDelays15Mins": {
+  {
     "title": "Train delays longer than 15 minutes",
     "slug": "train-delays-longer-than-15-minutes",
     "periods": {
@@ -16280,7 +16280,7 @@
       }
     }
   },
-  "stnClosures": {
+  {
     "title": "Station closures",
     "slug": "station-closures",
     "periods": {
@@ -19289,4 +19289,4 @@
       }
     }
   }
-}
+]
